@@ -1,0 +1,55 @@
+﻿<h1>Cálculo do CDB</h1>
+
+<form *ngIf="!cdbList" [formGroup]="form" >
+    <div class="form-group">
+      <label for="meses">Meses:</label>
+      <input type="number" [disabled]="aguardando" formControlName="meses" class="form-control" id="meses">
+    </div>
+
+    <div class="form-group">
+      <label for="valor">Valor:</label>
+      <input type="text" [disabled]="aguardando" formControlName="valor"  class="form-control" id="valor">
+    </div>
+
+    <tr *ngIf="aguardando">
+        <td colspan="4" class="text-center">
+            <span class="spinner-border spinner-border-lg align-center"></span>
+        </td>
+    </tr>
+
+    <button type="submit" class="btn btn-primary active" (click)="calcular()" [disabled]="!form.value.valor || !form.value.meses">Calcular</button>
+</form>
+
+<table *ngIf="cdbList" class="table table-striped">
+    <thead>
+        <tr>
+            <th><button type="submit" class="btn btn-primary active" (click)="limpar()">Novo cálculo</button></th>
+            <th>Mês</th>
+            <th>Valor Inicial</th>
+            <th>Valor Final</th>
+            <th>Imposto</th>
+            <th>Taxa Imposto</th>
+            <th>Valor Bruto</th>
+            <th>Juros</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let cdb of cdbList">
+            <td style="white-space: nowrap">
+                <!-- <a class="btn btn-sm btn-primary me-1">Edit</a>
+                <button (click)="deleteUser(cdb.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="cdb.isDeleting">
+                    <span *ngIf="cdb.isDeleting" class="spinner-border spinner-border-sm"></span>
+                    <span *ngIf="!cdb.isDeleting">Delete</span>
+                </button> -->
+            </td>            
+            <td>{{cdb.mes}}</td>
+            <td>{{cdb.valorInicial | currency}}</td>
+            <td>{{cdb.valorFinal | currency}}</td>
+            <td>{{cdb.imposto | currency}}</td>
+            <td>{{cdb.taxaImposto |  percent: '1.2-4'}}</td>
+            <td>{{cdb.valorBruto | currency}}</td>
+            <td>{{cdb.juros | currency}}</td>
+        </tr>
+
+    </tbody>
+</table>
